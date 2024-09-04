@@ -6,20 +6,20 @@ function uuidv4() {
 
 document.getElementById('openApp').addEventListener('click', function(event) {
   let options = {};
-  const name = document.getElementById('name')
-  const version = document.getElementById('select_version')
+  const name = document.getElementById('name');
+  const version = document.getElementById('select_version');
+
+  window.location.href = `https://github.com/dkks112313/dwd/releases/download/1/${version.value}.zip`;
 
   if (name.value == '' || name.value == ' ')
       return;
 
-  options['username'] = name.value
+  options['username'] = name.value;
   options['uuid'] = uuidv4();
   options['token'] = '';
 
-  const json = JSON.stringify(options)
-  var appUrl = `anpan://?options=${encodeURIComponent(json)}&version=${encodeURIComponent(version.value)}`;
-  
-  //var fallbackUrl = 'https://google.com';
+  const json = JSON.stringify(options);
+  var appUrl = `anpan://?options=${encodeURIComponent(json)}&version=${encodeURIComponent(version.value)}&dir=false`;
 
   var iframe = document.createElement('iframe');
   iframe.style.display = 'none';
@@ -27,8 +27,22 @@ document.getElementById('openApp').addEventListener('click', function(event) {
 
   document.body.appendChild(iframe);
 
-  /*var timeout = setTimeout(function() {
+  setTimeout(function() {
       document.body.removeChild(iframe);
-      window.location.href = fallbackUrl;
-  }, 5000);*/
+      console.log("Hello i'm errror message");
+  }, 2000);
 });
+
+document.getElementById('openDir').addEventListener('click', function(event) {
+  var appUrl = `anpan://?dir=true`;
+
+  var iframe = document.createElement('iframe');
+  iframe.style.display = 'none';
+  iframe.src = appUrl;
+
+  document.body.appendChild(iframe);
+
+  setTimeout(function() {
+      document.body.removeChild(iframe);
+  }, 2000);
+})
