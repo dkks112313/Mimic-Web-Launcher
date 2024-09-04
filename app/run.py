@@ -4,9 +4,19 @@ import json
 import platform
 import subprocess
 import sys
+import uuid
 import urllib.parse
 
-from minecraft_launcher_lib.exceptions import VersionNotFound
+
+class VersionNotFound(ValueError):
+    def __init__(self, version: str) -> None:
+        self.version: str = version
+        "The version that caused the exception"
+
+        self.msg: str = f"Version {version} was not found"
+        "A message to display"
+
+        ValueError.__init__(self, self.msg)
 
 
 def get_arguments_string(versionData, path, options, classpath):
@@ -338,12 +348,14 @@ if len(sys.argv) > 1:
     parsed_url = urllib.parse.urlparse(url)
     query_params = urllib.parse.parse_qs(parsed_url.query)
 
+    dir = query_params.get('dir', [None])[0]
+    if (dir == 'true'):
+        subprocess.Popen("explorer " + os.path.join(os.getenv('APPDATA'), '.anpan'),
+                         creationflags=subprocess.CREATE_NO_WINDOW)
+        exit(0)
+
     data_param = query_params.get('options', [None])[0]
     version_param = query_params.get('version', [None])[0]
-    dir = query_params.get('version', [None])[0]
-    if (dir == 'true'):
-        subprocess.Popen("explorer " + os.path.join(os.getenv('APPDATA'), '.anpan'), creationflags=subprocess.CREATE_NO_WINDOW)
-        exit(0)
 
     data_dict = json.loads(data_param)
     version = version_param
