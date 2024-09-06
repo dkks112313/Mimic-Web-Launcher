@@ -9,8 +9,6 @@ document.getElementById('openApp').addEventListener('click', function(event) {
   const name = document.getElementById('name');
   const version = document.getElementById('select_version');
 
-  window.location.href = `https://github.com/dkks112313/dwd/releases/download/1/${version.value}.zip`;
-
   if (name.value == '' || name.value == ' ')
       return;
 
@@ -20,6 +18,7 @@ document.getElementById('openApp').addEventListener('click', function(event) {
 
   const json = JSON.stringify(options);
   var appUrl = `anpan://?options=${encodeURIComponent(json)}&version=${encodeURIComponent(version.value)}&dir=false`;
+  console.log(appUrl)
 
   var iframe = document.createElement('iframe');
   iframe.style.display = 'none';

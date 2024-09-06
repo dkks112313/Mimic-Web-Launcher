@@ -1,2 +1,5 @@
+С консолью
 nuitka --standalone --onefile --output-dir=web-app --output-filename=run.exe --jobs=4 web-app/run.py
---windows-console-mode=disable
+
+Без консоли
+nuitka --standalone --onefile --windows-console-mode=disable --output-dir=web-app --output-filename=run.exe --jobs=4 web-app/run.py
