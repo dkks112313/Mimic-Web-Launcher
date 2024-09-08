@@ -4,6 +4,7 @@ import json
 import platform
 import subprocess
 import sys
+import uuid
 import urllib.parse
 
 
@@ -348,16 +349,22 @@ if len(sys.argv) > 1:
     query_params = urllib.parse.parse_qs(parsed_url.query)
 
     dir = query_params.get('dir', [None])[0]
-    if (dir == 'true'):
+    if dir == 'true':
         subprocess.Popen("explorer " + os.path.join(os.getenv('APPDATA'), '.anpan'),
                          creationflags=subprocess.CREATE_NO_WINDOW)
-        exit(0)
+        sys.exit(0)
 
     data_param = query_params.get('options', [None])[0]
+    name_param = query_params.get('name', [None])[0]
     version_param = query_params.get('version', [None])[0]
 
     data_dict = json.loads(data_param)
     version = version_param
+    name = name_param
+
+    if not os.path.isdir(os.path.join(os.getenv('APPDATA'), '.anpan', version)):
+        subprocess.Popen([os.path.join(os.path.expanduser('~'), 'An-Pan', 'install.exe'), name, version], creationflags=subprocess.CREATE_NO_WINDOW)
+        sys.exit(0)
 
     command = ''
     try:

@@ -9,4 +9,4 @@ Windows Registry Editor Version 5.00
 [HKEY_CLASSES_ROOT\anpan\shell\open]
 
 [HKEY_CLASSES_ROOT\anpan\shell\open\command]
-@="\"C:\\Users\\ovcha\\werun.exe\" \"%1\""
+@="\"C:\\Users\\ovcha\\main.exe\" \"%1\""

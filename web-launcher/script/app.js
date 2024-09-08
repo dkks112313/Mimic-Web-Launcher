@@ -17,23 +17,27 @@ document.getElementById('openApp').addEventListener('click', function(event) {
   options['token'] = '';
 
   const json = JSON.stringify(options);
-  var appUrl = `anpan://?options=${encodeURIComponent(json)}&version=${encodeURIComponent(version.value)}&dir=false`;
-  console.log(appUrl)
+  let appUrl = `anpan://?options=${encodeURIComponent(json)}&name=${encodeURIComponent(name.value)}&version=${encodeURIComponent(version.value)}&dir=false`;
 
-  var iframe = document.createElement('iframe');
+  let iframe = document.createElement('iframe');
   iframe.style.display = 'none';
   iframe.src = appUrl;
 
   document.body.appendChild(iframe);
+ 
+  let timeout = setTimeout(function() {
+    window.location.href = 'https://github.com/dkks112313/dwd/releases/download/1/web-pan.1.0.0.exe';
+    document.body.removeChild(iframe);
+  }, 1000);
 
-  setTimeout(function() {
-      document.body.removeChild(iframe);
-      console.log("Hello i'm errror message");
-  }, 2000);
+  window.addEventListener('blur', function() {
+    clearTimeout(timeout);
+    document.body.removeChild(iframe);
+  });
 });
 
 document.getElementById('openDir').addEventListener('click', function(event) {
-  var appUrl = `anpan://?dir=true`;
+  let appUrl = `anpan://?dir=true`;
 
   var iframe = document.createElement('iframe');
   iframe.style.display = 'none';
@@ -41,7 +45,12 @@ document.getElementById('openDir').addEventListener('click', function(event) {
 
   document.body.appendChild(iframe);
 
-  setTimeout(function() {
-      document.body.removeChild(iframe);
+  let timeout = setTimeout(function() {
+    window.location.href = 'https://github.com/dkks112313/dwd/releases/download/1/web-pan.1.0.0.exe';
   }, 2000);
+
+  window.addEventListener('blur', function() {
+    clearTimeout(timeout);
+    document.body.removeChild(iframe);
+  });
 })

@@ -1,0 +1,10 @@
+localhost {
+	root * ./
+	file_server browse
+
+	@zip path *.zip
+	header @zip {
+		Content-Type application/octet-stream
+		Content-Disposition `attachment; filename="{file}"`
+	}
+}
