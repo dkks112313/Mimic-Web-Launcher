@@ -3,7 +3,9 @@ fetch('https://launchermeta.mojang.com/mc/game/version_manifest_v2.json')
     .then(r => r.json())
     .then(names => {
         for(let i = 0; i < names['versions'].length; i++) {
-            let newOption = new Option(names['versions'][i]['id'], names['versions'][i]['id']);
-            version_list.append(newOption);
+            if(names['versions'][i]['type'] == 'release') {
+                let newOption = new Option(names['versions'][i]['id'], names['versions'][i]['type']);
+                version_list.append(newOption);
+            }
         }
     });
