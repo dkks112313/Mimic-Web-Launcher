@@ -1,10 +1,10 @@
 const { app } = require('electron');
 const ProgressBar = require('electron-progressbar');
-const { Client, Authenticator } = require('minecraft-launcher-core');
-const path = require('path');
+const { Mojang, Launch } = require('minecraft-java-core');
 const process = require('process');
-const fs = require('fs');
 const url = require('url');
+const path = require('path');
+const os = require('os');
 
 app.on('ready', function() {
   var progressBar = new ProgressBar({
@@ -21,42 +21,97 @@ app.on('ready', function() {
       console.info(`aborted...`);
     });
   
-  launchTask().then(() => {
-    progressBar.setCompleted();
-  }).catch((e) => {
-    console.log(e)
-  })
-});
+    launchTask(progressBar);
+})
 
-async function launchTask() {
-  const launcher = new Client();
-  const pathMine = path.join(process.env.APPDATA, 'WebPan');
+async function launchTask(progressBar) {
+  const launch = new Launch();
+  const params = JSON.parse(url.parse(process.argv[2], true).query['options']);
 
-  if (!fs.existsSync(pathMine)) {
-    fs.mkdirSync(pathMine, { recursive: true });
+  let mode = null;
+  let enables = false;
+  if (params['mode'] == 'Forge' || params['mode'] == 'Fabric' 
+    || params['mode'] == 'Quilt' || params['mode'] == 'Neoforge') {
+    mode = params['mode'].toLowerCase();
+    enables = true;
   }
 
-  let params = JSON.parse(url.parse(process.argv[2], true).query['options']);
-
-  const options = {
-    clientPackage: null,
-    authorization: Authenticator.getAuth(params['name']),
-    root: pathMine,
-    version: {
-      number: params['version'],
-      type: "release"
+  let option = {
+    authenticator: await Mojang.login(params['name']),
+    url: null,
+    authenticator: null,
+    path: path.join(os.homedir(), 'Web-Pan', 'RMinecraft'),
+    version: params['version'],
+    instance: null,
+    detached: false,
+    intelEnabledMac: false,
+    loader: {
+      path: path.join(os.homedir(), 'Web-Pan', 'RMinecraft', 'loader'),
+      type: mode,
+      build: 'latest',
+      enable: enables,
+    },
+    mcp: null,
+    verify: false,
+    ignored: [],
+    JVM_ARGS: [],
+    GAME_ARGS: [],
+    java: {
+      path: null,
+      version: null,
+      type: 'jre',
+    },
+    screen: {
+      width: null,
+      height: null,
+      fullscreen: false,
     },
     memory: {
-      max: "6G",
-      min: "4G"
+      min: '4G',
+      max: '6G'
     },
-    javaPath: 'C:\\Program Files\\Java\\jdk-17\\bin\\javaw.exe'
-  };
-  
-  launcher.launch(options);
-  
-  launcher.on('debug', (e) => console.log('[DEBUG]', e));
-  return new Promise((resolve, reject) => {
-    launcher.on('data', (e) => resolve());
+  }
+
+  await launch.Launch(option);
+
+  launch.on('extract', extract => {
+      console.log(extract);
+  });
+
+  launch.on('progress', (progress, size, element) => {
+      console.log(`Downloading ${element} ${Math.round((progress / size) * 100)}%`);
+  });
+
+  launch.on('check', (progress, size, element) => {
+      console.log(`Checking ${element} ${Math.round((progress / size) * 100)}%`);
+  });
+
+  launch.on('estimated', (time) => {
+      let hours = Math.floor(time / 3600);
+      let minutes = Math.floor((time - hours * 3600) / 60);
+      let seconds = Math.floor(time - hours * 3600 - minutes * 60);
+      console.log(`${hours}h ${minutes}m ${seconds}s`);
+  })
+
+  launch.on('speed', (speed) => {
+      console.log(`${(speed / 1067008).toFixed(2)} Mb/s`)
+  })
+
+  launch.on('patch', patch => {
+      console.log(patch);
+  });
+
+  launch.on('data', (e) => {
+      progressBar._window.hide();
+      console.log(e);
+  })
+
+  launch.on('close', code => {
+      progressBar.setCompleted();
+      console.log(code);
+  });
+
+  launch.on('error', err => {
+      console.log(err);
   });
 }

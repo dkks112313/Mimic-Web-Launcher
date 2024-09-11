@@ -30,11 +30,11 @@ app.on('ready', function() {
 
 function create_register() {
   const commands = [
-    'reg add "HKEY_CLASSES_ROOT\\anpan" /ve /d "An-Pan" /f',
-    'reg add "HKEY_CLASSES_ROOT\\anpan" /v "URL Protocol" /d "" /f',
-    'reg add "HKEY_CLASSES_ROOT\\anpan\\shell" /f',
-    'reg add "HKEY_CLASSES_ROOT\\anpan\\shell\\open" /f',
-    `reg add "HKEY_CLASSES_ROOT\\anpan\\shell\\open\\command" /ve /d "\\"${os.homedir()}\\\\An-Pan\\\\main.exe\\" \\"%1\\"" /f`
+    'reg add "HKEY_CLASSES_ROOT\\webpan" /ve /d "Web-Pan" /f',
+    'reg add "HKEY_CLASSES_ROOT\\webpan" /v "URL Protocol" /d "" /f',
+    'reg add "HKEY_CLASSES_ROOT\\webpan\\shell" /f',
+    'reg add "HKEY_CLASSES_ROOT\\webpan\\shell\\open" /f',
+    `reg add "HKEY_CLASSES_ROOT\\webpan\\shell\\open\\command" /ve /d "\\"${os.homedir()}\\\\Web-Pan\\\\app.exe\\" \\"%1\\"" /f`
   ];
   
   commands.forEach(command => {
@@ -85,11 +85,10 @@ async function launchTask(progressBar) {
     .then(() => {
       console.log('File successfully downloaded.');
 
-      const homeDir = os.homedir();
-      const appDataPath = path.join(homeDir, 'An-Pan');
+      const appDataPath = path.join(os.homedir(), 'Web-Pan');
 
-      if (!fs.existsSync(path.join(homeDir, 'An-Pan'))) {
-        fs.mkdir(path.join(homeDir, 'An-Pan'), (err) => {
+      if (!fs.existsSync(appDataPath)) {
+        fs.mkdir(appDataPath, (err) => {
           if (err) {
             console.error(err);
           } else {
