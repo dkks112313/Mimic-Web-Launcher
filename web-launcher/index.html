@@ -5,25 +5,27 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>An-Pan Web-Launcher</title>
     </head>
+
     <body>
         <label>Username: </label>
-        <input type="text" id="name"/>
+        <input type="text" id="name" class="name"/>
         <br/> <br/>
         <label>Version: </label>
-        <select id="select_version"></select>
+        <select id="select_version" class="version"></select>
         <br/> <br/>
         <label>Mode: </label>
-        <select id="select_mode">
+        <select id="select_mode" class="version">
             <option>Vanilla</option>
             <option>Forge</option>
             <option>Fabric</option>
-            <option>Qulit</option>
+            <option>Quilt</option>
             <option>Neoforge</option>
         </select>
         <br/> <br/>
-        <button id="openApp" style="color: black;">Click</button>
-        <button id="openDir" style="color: black;">Open</button>
+        <button id="openApp" style="color: black;" class="game">Click</button>
+        <button id="openDir" style="color: black;" class="dir">Open</button>
     </body>
+
     <script src="script/app.js"></script>
     <script src="script/version.js"></script>
 </html>

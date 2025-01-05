@@ -29,3 +29,75 @@
 .custom-file-input:active::before {
     background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
 }
+.launcher {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    width: 400px;
+    margin: 50px auto;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .header {
+    background-color: #3e3e3e;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .title {
+    color: #d4a4ff;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .settings .icon, .settings .theme-toggle {
+    font-size: 20px;
+    color: #ffffff;
+  }
+  
+  .background-image {
+    height: 200px;
+    background: url('your-background-image-url.jpg') no-repeat center center;
+    background-size: cover;
+  }
+  
+  .login-panel {
+    padding: 20px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  label {
+    font-size: 16px;
+    color: #333333;
+  }
+  
+  input[type="text"] {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+  }
+  
+  .play-button {
+    background-color: #b883ff;
+    border: none;
+    color: white;
+    padding: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+  
+  .play-button:hover {
+    background-color: #a66cff;
+  }
+  

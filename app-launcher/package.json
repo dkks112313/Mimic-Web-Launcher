@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "start": "electron main.js anpan://?options=%7B%22name%22%3A%22hello%22%2C%22version%22%3A%221.19%22%2C%22type%22%3A%22release%22%7D",
+    "start": "electron main.js webpan://?options=%7B%22name%22%3A%22hello%22%2C%22version%22%3A%221.16.5%22%2C%22type%22%3A%22snapshot%22%2C%22mode%22%3A%22Forge%22%7D",
     "test": "electron main.js anpan://?options=%7B%22dir%22%3A%22true%22%7D",
     "build": "electron-builder --win portable"
   },
   "build": {
-    "asar": true,
     "files": [
       "main.js"
     ]
@@ -17,6 +16,7 @@
     "electron-progressbar": "^2.2.1",
     "minecraft-java-core": "^3.11.0",
     "minecraft-launcher-core": "^3.18.1",
+    "process": "^0.11.10",
     "python-shell": "^5.0.0",
     "tomate-loaders": "^2.0.2"
   },

@@ -6,7 +6,9 @@ const axios = require('axios');
 const adm = require('adm-zip');
 const os = require('os');
 const path = require('path');
+const { Mojang, Launch } = require('minecraft-java-core');
 
+const launch_json = new Launch();
 const repo = 'dkks112313/dwd';
 const file_name = 'setup.zip';
 
@@ -106,12 +108,93 @@ async function launchTask(progressBar) {
         if (err) throw err;
         console.log('File deleted');
       });
-      
-      create_register();
 
-      progressBar.setCompleted();
+      launch(progressBar).then(() => {
+        create_register();
+      }).catch((e) => {
+        console.log(e);
+      });
     })
     .catch(err => {
         console.error(`Error downloading file: ${err.message}`);
     });
+}
+
+async function launch(progressBar) {
+  let option = {
+    authenticator: await Mojang.login('name'),
+    path: path.join(os.homedir(), 'Web-Pan', 'Minecraft'),
+    version: '1.16.5',
+    loader: {
+      path: './loader',
+      type: 'forge',
+      build: 'latest',
+      enable: true,
+    },
+    JVM_ARGS: [],
+    GAME_ARGS: [],
+    java: {
+      path: null,
+      version: null,
+      type: 'jre',
+    },
+    screen: {
+      width: null,
+      height: null,
+      fullscreen: false,
+    },
+    memory: {
+      min: '4G',
+      max: '6G'
+    },
+  }
+
+  await launch_json.Launch(option);
+
+  launch_json.on('extract', extract => {
+    console.log(extract);
+  });
+
+  launch_json.on('progress', (progress, size, element) => {
+    console.log(`Downloading ${element} ${Math.round((progress / size) * 100)}%`);
+    if (element == "Java" && Math.round((progress / size) * 100) == 100) {
+      progressBar.setCompleted();
+    }
+  });
+
+  launch_json.on('check', (progress, size, element) => {
+    console.log(`Checking ${element} ${Math.round((progress / size) * 100)}%`);
+    if (element == "Java" && Math.round((progress / size) * 100) == 100) {
+      progressBar.setCompleted();
+    }
+  });
+
+  launch_json.on('estimated', (time) => {
+    let hours = Math.floor(time / 3600);
+    let minutes = Math.floor((time - hours * 3600) / 60);
+    let seconds = Math.floor(time - hours * 3600 - minutes * 60);
+    console.log(`${hours}h ${minutes}m ${seconds}s`);
+  })
+
+  launch_json.on('speed', (speed) => {
+    console.log(`${(speed / 1067008).toFixed(2)} Mb/s`)
+  })
+
+  launch_json.on('patch', patch => {
+    console.log(patch);
+  });
+
+  launch_json.on('data', (e) => {
+    console.log(e);
+    progressBar.setCompleted();
+  })
+
+  launch_json.on('close', code => {
+    progressBar.setCompleted();
+    console.log(code);
+  });
+
+  launch_json.on('error', err => {
+    console.log(err);
+  });
 }

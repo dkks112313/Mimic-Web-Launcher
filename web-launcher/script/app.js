@@ -5,18 +5,17 @@ document.getElementById('openApp').addEventListener('click', function(event) {
 
   let result = version.options[version.selectedIndex].text;
 
-  if (name.value == '' || name.value == ' ')
+  if (name.value == '')
       return;
 
   const options = {
     name: name.value,
     version: result,
-    type: version.value,
     mode: mode.value
   };
 
   const json = JSON.stringify(options);
-  let appUrl = `anpan://?options=${encodeURIComponent(json)}`;
+  let appUrl = `webpan://?options=${encodeURIComponent(json)}`;
   console.log(appUrl)
 
   let iframe = document.createElement('iframe');
@@ -42,7 +41,7 @@ document.getElementById('openDir').addEventListener('click', function(event) {
   };
 
   const json = JSON.stringify(options);
-  let appUrl = `anpan://?options=${encodeURIComponent(json)}`;
+  let appUrl = `webpan://?options=${encodeURIComponent(json)}`;
   console.log(appUrl);
 
   var iframe = document.createElement('iframe');
@@ -51,13 +50,13 @@ document.getElementById('openDir').addEventListener('click', function(event) {
 
   document.body.appendChild(iframe);
 
-  /*let timeout = setTimeout(function() {
+  let timeout = setTimeout(function() {
     document.body.removeChild(iframe);
     window.location.href = 'https://github.com/dkks112313/dwd/releases/download/1/web-pan.1.0.0.exe';
-  }, 1000);
+  }, 10000);
 
   window.addEventListener('blur', function() {
-    document.body.removeChild(iframe);
     clearTimeout(timeout);
-  });*/
+    document.body.removeChild(iframe);
+  });
 })

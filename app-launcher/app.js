@@ -5,7 +5,7 @@ async function main() {
     let opt = {
         authenticator: await Mojang.login('user'),
         path: './Minecraft',
-        version: '1.18',
+        version: '1.14.4',
     
         java: {
             path: '',
