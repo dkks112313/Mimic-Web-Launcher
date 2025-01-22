@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mimi</title>
+</head>
+
+<body>
+<main class="container">
+    <h1>Welcome to Mimi Launcher</h1>
+
+    <form class="row" id="greet-form">
+        <input id="greet-input" placeholder="Enter a name..." />
+        <button id="progress">Play</button>
+    </form>
+
+    <form class="row" id="version">
+        <select id="greet-select"></select>
+
+        <select id="greet-sel">
+            <option value="value1">Vanilla</option>
+            <option value="value2">Forge</option>
+            <option value="value3">Fabric</option>
+            <option value="value4">Qulit</option>
+            <option value="value5">Neoforge</option>
+        </select>
+    </form>
+
+    <p id="greet-msg"></p>
+</main>
+</body>
+
+<script src="render.js" defer></script>
+
+<script>
+    const version_list = document.getElementById('greet-select');
+    fetch('https://launchermeta.mojang.com/mc/game/version_manifest_v2.json')
+        .then(r => r.json())
+        .then(names => {
+            let namesContains = names['versions'];
+            for(let i = 0; i < namesContains.length; i++) {
+                let newOption = new Option(namesContains[i]['id'], namesContains[i]['type']);
+                version_list.append(newOption);
+            }
+        });
+
+    const greetForm = document.getElementById('greet-form');
+
+    greetForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+    });
+</script>
+</html>

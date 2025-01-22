@@ -1,0 +1,43 @@
+{
+  "name": "mimi-launcher",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "index.js",
+  "workspaces": [
+    "src/*"
+  ],
+  "scripts": {
+    "start": "electron index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "yarn workspace main build",
+    "electron-build": "yarn build && electron-builder",
+    "build:app": "yarn electron-build --dir",
+    "build:all": "yarn electron-build build -mwl",
+    "build:mac": "yarn electron-build build --mac",
+    "build:linux": "yarn electron-build build --linux",
+    "build:windows": "yarn electron-build build --windows --x64",
+    "build-portable": "electron-builder --win portable"
+  },
+  "build": {
+    "files": [
+      "index.js"
+    ]
+  },
+  "devDependencies": {
+    "electron-progressbar": "^2.2.1",
+    "minecraft-launcher-core": "^3.18.1",
+    "process": "^0.11.10",
+    "python-shell": "^5.0.0",
+    "tomate-loaders": "^2.0.2",
+    "electron": "^34.0.0",
+    "electron-builder": "^25.1.8",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@electron/remote": "^2.1.2",
+    "electron-progressbar": "^2.2.1",
+    "minecraft-launcher-core": "^3.18.2",
+    "process": "^0.11.10",
+    "tomate-loaders": "^2.0.2"
+  }
+}

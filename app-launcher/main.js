@@ -3,8 +3,6 @@ const ProgressBar = require('electron-progressbar');
 const { Mojang, Launch } = require('minecraft-java-core');
 const { Client, Authenticator } = require('minecraft-launcher-core');
 const { forge } = require('tomate-loaders');
-const process = require('process');
-const url = require('url');
 const path = require('path');
 const os = require('os');
 const fs = require('fs');
@@ -12,7 +10,11 @@ const fs = require('fs');
 const launch_toml = new Client();
 const launch_json = new Launch();
 
-const params = JSON.parse(url.parse(process.argv[2], true).query['options']);
+const params = {
+  name: "Artem",
+  version: "1.21.3",
+  mode: "Neoforge"
+}
 
 app.on('ready', function() {
   let progressBar = new ProgressBar({
@@ -78,7 +80,7 @@ async function launchTask(progressBar) {
 
   let option= {
     authenticator: await Mojang.login(params['name']),
-    path: path.join(os.homedir(), 'Web-Pan', 'Minecraft'),
+    path: path.join(os.homedir(), 'Launcher'),
     version: params['version'],
     loader: {
       path: '',
